@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <cmath>
 #include <cstdio>
 #include <numeric> //For accumulate operation
@@ -55,15 +56,33 @@ class PrintSeries : DumperSeries {
     
 public:
     // Constructor to set frequency and maxiter
-    PrintSeries(Series &series, std::vector<double> frequency, int maxiter)
+    PrintSeries(Series &series, int frequency, int maxiter)
     : DumperSeries(series), frequency(frequency), maxiter(maxiter) {}
     
     void dump();
     
 private:
-    std::vector<double> frequency; // I think I have to define them as private ? + Is frequency a vector ?
+    int frequency; // I think I have to define them as private ? + Is frequency a vector or integer ?
     int maxiter;
+    // No need to define Series *series : why? Because it inherits from DumperSeries, which has series initialized.
+};
+
+
+class WriteSeries : DumperSeries {
     
+public:
+    // Constructor to set frequency and maxiter
+    WriteSeries(Series &series, int frequency, int maxiter)
+    : DumperSeries(series), frequency(frequency), maxiter(maxiter) {}
+    
+    void dump();
+
+    // char setSeparator(separatorChoice) to be defined
+    
+private:
+    int frequency;
+    int maxiter;
+    std::string separatorChoice;
 };
 
 #endif /* methods_hpp */

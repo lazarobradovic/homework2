@@ -42,12 +42,74 @@ double ComputePi::getAnalyticPrediction(){
 
 void PrintSeries::dump(){
     double output;
-    
-    for (unsigned int k=0; k<frequency.size()-1; k++) {
-        if (frequency[k+1]-frequency[k]<maxiter) {
-            output = frequency[k+1]-frequency[k];
-            std::cout << "\nThe result is: " << output << std::endl;
-        }
+    unsigned int N = 0;
+
+    while (N<maxiter)
+    {
+        output = series.compute(N); // Here series is supposed to correspond to seriesPtr in the main
+        std::cout << "\nThe result is: " << output << std::endl;
+        N += frequency;
     }
     
+    std::cout << "\nThe series converges to: " << series.getAnalyticPrediction() << std::endl;
+}
+
+/*
+The WriteSeries should write the results in a file.
+*/
+
+void WriteSeries::dump(){
+    double output;
+    unsigned int N = 0;
+    char separator;
+    std::string separatorChoice;
+    std::cout << "Enter a separator type (comma, tab, pipe) " << std::endl;
+    std::cin >> separatorChoice;
+
+    /* if (separatorChoice == "comma")
+    {
+        std::ofstream outputFile("output.csv");
+        separator = ',';
+    }
+    else if (separatorChoice == "tab")
+    {
+        std::ofstream outputFile("output.txt");
+        separator = '\t';
+    }
+    else if (separatorChoice == "pipe")
+    {
+        std::ofstream outputFile("output.psv");
+        separator = '|';
+    }
+    else
+    {
+        std::cout << "\nUnknown separator input. Default to .txt" <<std::endl;
+        std::ofstream outputFile("output.txt");
+        separator = '\t';
+    } */
+
+    std::ofstream outputFile;
+    outputFile.open("output.txt");
+    separator = '\t';
+    
+    if (!outputFile.is_open())
+    {
+        std::cerr << "Error: Unable to open the file." << std::endl;
+    }
+    
+    // Write data to the file using the selected separator
+    outputFile << "N" << separator << "Series computation" << std::endl;
+    while (N<maxiter){
+        output = series.compute(N); // Here series is supposed to correspond to seriesPtr in the main
+        outputFile << N << separator << output << std::endl;
+        N += frequency;
+    }
+
+    double analyticPrediction = series.getAnalyticPrediction();
+    outputFile << "\nConvergence" << separator << analyticPrediction << std::endl;
+
+    outputFile.flush();
+    outputFile.close();
+    std::cout << "Data written to output file." << std::endl;
+
 }

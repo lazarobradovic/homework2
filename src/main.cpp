@@ -41,31 +41,36 @@ int main()
         std::cout << "You must enter a positive integer.\n";
         return 1;
     }
-    
-    double result = seriesPtr->compute(N);
- 
-    // Output the result of the Series
-    cout << "\nThe Series result is: " << result << std::endl;
-    
+    else
+    {
+        double result = seriesPtr->compute(N);
+        cout << "\nThe Series result is: " << result << std::endl;
+    }
     
     // Defining Series, frequency and maxiter. Calling dump().
     
-    /* For next time : frequency should be an integer. Then dump should compute ComputePi or ComputeArithmetic for frequency<maxiter. At least that is my last understanding. Or better ! Compute frequency = delta compute(n+1)-compute(n). If frequency<maxiter, stop. Frequency computes the step, and while the step is smaller than precision, we stop. This  */
-    std::vector<double> frequency(5);
     
-    frequency[0] = 5;    
-    frequency[1] = 15;
-    frequency[2] = 24;
-    frequency[3] = 36;
-    frequency[4] = 37;
+    int frequency;
+    std::cout << "Enter an integer value for the frequency: ";
+    std::cin >> frequency;
+
+    int maxiter;
+    std::cout << "Enter an integer value for the maximum of iterations: ";
+    std::cin >> maxiter;
     
-    int maxiter = 10;
-    ComputeArithmetic mySeries;
-    PrintSeries printer(mySeries,frequency,maxiter);
-    
+    PrintSeries printer(*seriesPtr,frequency,maxiter);
+    WriteSeries writer(*seriesPtr,frequency,maxiter);
+
+    /*
+    WRITING INTO A FILE
+    */
+
+    /* std::string separatorDecision;
+    std::cout << "Enter the wanted separator for the output file (comma, space/tab or pipe): ";
+    std::cin >> separatorDecision; */
+
     printer.dump();
-    
-    // std::cout << "Enter the integer cutoff for the series: ";
+    writer.dump(); // SOMETHING'S WRONG WITH IT.
  
     return 0;
 }
