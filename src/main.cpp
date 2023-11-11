@@ -70,7 +70,7 @@ int main()
     std::cin >> separatorDecision; */
 
     printer.dump();
-    writer.dump(); // SOMETHING'S WRONG WITH IT.
+    writer.dump();
  
     return 0;
 }
