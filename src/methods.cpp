@@ -61,36 +61,28 @@ The WriteSeries should write the results in a file.
 void WriteSeries::dump(){
     double output;
     unsigned int N = 0;
-    char separator;
-    std::string separatorChoice;
-    std::cout << "Enter a separator type (comma, tab, pipe) " << std::endl;
-    std::cin >> separatorChoice;
-
-    /* if (separatorChoice == "comma")
-    {
-        std::ofstream outputFile("output.csv");
-        separator = ',';
-    }
-    else if (separatorChoice == "tab")
-    {
-        std::ofstream outputFile("output.txt");
-        separator = '\t';
-    }
-    else if (separatorChoice == "pipe")
-    {
-        std::ofstream outputFile("output.psv");
-        separator = '|';
-    }
-    else
-    {
-        std::cout << "\nUnknown separator input. Default to .txt" <<std::endl;
-        std::ofstream outputFile("output.txt");
-        separator = '\t';
-    } */
-
+    std::string filename;
+    std::string separator;
     std::ofstream outputFile;
-    outputFile.open("output.txt");
-    separator = '\t';
+
+    // Get user input for file name and separator
+    std::cout << "Enter file name: ";
+    std::cin >> filename;
+
+    std::cout << "Enter separator (csv/psv/txt, default is txt): ";
+    std::cin >> separator;
+
+    // Set the default file extension to .txt
+    if (separator != "csv" && separator != "psv") {
+        separator = "txt";
+        std::cout << "File extension set to .txt"
+    }
+
+    // Append the appropriate extension to the file name
+    outputFile += "." + separator;
+
+    // Open the file using ofstream
+    std::ofstream file(filename);
     
     if (!outputFile.is_open())
     {

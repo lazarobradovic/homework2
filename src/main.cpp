@@ -61,14 +61,6 @@ int main()
     PrintSeries printer(*seriesPtr,frequency,maxiter);
     WriteSeries writer(*seriesPtr,frequency,maxiter);
 
-    /*
-    WRITING INTO A FILE
-    */
-
-    /* std::string separatorDecision;
-    std::cout << "Enter the wanted separator for the output file (comma, space/tab or pipe): ";
-    std::cin >> separatorDecision; */
-
     printer.dump();
     writer.dump();
  
