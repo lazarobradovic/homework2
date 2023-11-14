@@ -61,13 +61,12 @@ The WriteSeries should write the results in a file.
 void WriteSeries::dump(){
     double output;
     unsigned int N = 0;
-    std::string filename;
     std::string separator;
     std::ofstream outputFile;
 
     // Get user input for file name and separator
     std::cout << "Enter file name: ";
-    std::cin >> filename;
+    std::cin >> outputFile;
 
     std::cout << "Enter separator (csv/psv/txt, default is txt): ";
     std::cin >> separator;
@@ -82,7 +81,7 @@ void WriteSeries::dump(){
     outputFile += "." + separator;
 
     // Open the file using ofstream
-    std::ofstream file(filename);
+    std::ofstream file(outputFile);
     
     if (!outputFile.is_open())
     {
