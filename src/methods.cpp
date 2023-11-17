@@ -62,45 +62,60 @@ void WriteSeries::dump(){
     double output;
     unsigned int N = 0;
     std::string separator;
-    std::ofstream outputFile;
+    std::string extension;
+    std::string outputFile;
 
     // Get user input for file name and separator
     std::cout << "Enter file name: ";
     std::cin >> outputFile;
 
-    std::cout << "Enter separator (csv/psv/txt, default is txt): ";
-    std::cin >> separator;
+    std::cout << "Enter extension (csv/psv/txt, default is txt): ";
+    std::cin >> extension;
 
     // Set the default file extension to .txt
-    if (separator != "csv" && separator != "psv") {
-        separator = "txt";
-        std::cout << "File extension set to .txt"
+    if (extension != "csv" && extension != "psv") {
+        extension = "txt";
+        std::cout << "File extension set to .txt";
     }
 
+    if (extension == "csv")
+    {
+        separator = ",";
+    }
+    else if (extension == "psv")
+    {
+        separator = "|";
+    }
+    else
+    {
+        separator = "\t";
+    }
+    
+
     // Append the appropriate extension to the file name
-    outputFile += "." + separator;
+    outputFile += "." + extension;
 
     // Open the file using ofstream
     std::ofstream file(outputFile);
     
-    if (!outputFile.is_open())
+    if (!file.is_open())
     {
         std::cerr << "Error: Unable to open the file." << std::endl;
     }
     
     // Write data to the file using the selected separator
-    outputFile << "N" << separator << "Series computation" << std::endl;
+    file << "N" << separator << "Series computation" << std::endl;
     while (N<maxiter){
         output = series.compute(N); // Here series is supposed to correspond to seriesPtr in the main
-        outputFile << N << separator << output << std::endl;
+        file << N << separator << output << std::endl;
         N += frequency;
     }
 
     double analyticPrediction = series.getAnalyticPrediction();
-    outputFile << "\nConvergence" << separator << analyticPrediction << std::endl;
+    file << "\nConvergence" << separator << analyticPrediction << std::endl;
 
-    outputFile.flush();
-    outputFile.close();
+    file.flush();
+    file.close();
     std::cout << "Data written to output file." << std::endl;
 
 }
