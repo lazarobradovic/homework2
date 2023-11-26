@@ -61,55 +61,61 @@ The WriteSeries should write the results in a file.
 void WriteSeries::dump(){
     double output;
     unsigned int N = 0;
-    char separator;
-    std::string separatorChoice;
-    std::cout << "Enter a separator type (comma, tab, pipe) " << std::endl;
-    std::cin >> separatorChoice;
+    std::string separator;
+    std::string extension;
+    std::string outputFile;
 
-    /* if (separatorChoice == "comma")
-    {
-        std::ofstream outputFile("output.csv");
-        separator = ',';
+    // Get user input for file name and separator
+    std::cout << "Enter file name: ";
+    std::cin >> outputFile;
+
+    std::cout << "Enter extension (csv/psv/txt, default is txt): ";
+    std::cin >> extension;
+
+    // Set the default file extension to .txt
+    if (extension != "csv" && extension != "psv") {
+        extension = "txt";
+        std::cout << "File extension set to .txt";
     }
-    else if (separatorChoice == "tab")
+
+    if (extension == "csv")
     {
-        std::ofstream outputFile("output.txt");
-        separator = '\t';
+        separator = ",";
     }
-    else if (separatorChoice == "pipe")
+    else if (extension == "psv")
     {
-        std::ofstream outputFile("output.psv");
-        separator = '|';
+        separator = "|";
     }
     else
     {
-        std::cout << "\nUnknown separator input. Default to .txt" <<std::endl;
-        std::ofstream outputFile("output.txt");
-        separator = '\t';
-    } */
-
-    std::ofstream outputFile;
-    outputFile.open("output.txt");
-    separator = '\t';
+        separator = "\t";
+    }
     
-    if (!outputFile.is_open())
+
+    // Append the appropriate extension to the file name
+    outputFile += "." + extension;
+
+    // Open the file using ofstream
+    std::ofstream file(outputFile);
+    
+    if (!file.is_open())
     {
         std::cerr << "Error: Unable to open the file." << std::endl;
     }
     
     // Write data to the file using the selected separator
-    outputFile << "N" << separator << "Series computation" << std::endl;
+    file << "N" << separator << "Series computation" << std::endl;
     while (N<maxiter){
         output = series.compute(N); // Here series is supposed to correspond to seriesPtr in the main
-        outputFile << N << separator << output << std::endl;
+        file << N << separator << output << std::endl;
         N += frequency;
     }
 
     double analyticPrediction = series.getAnalyticPrediction();
-    outputFile << "\nConvergence" << separator << analyticPrediction << std::endl;
+    file << "\nConvergence" << separator << analyticPrediction << std::endl;
 
-    outputFile.flush();
-    outputFile.close();
+    file.flush();
+    file.close();
     std::cout << "Data written to output file." << std::endl;
 
 }

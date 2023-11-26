@@ -16,8 +16,10 @@ int main()
     // Letting the
     unsigned int N;
     std::string choice;
+    std::string printMethod;
     std::cout << "Enter 'A' for arithmetic series or 'P' for Pi series: ";
     std::cin >> choice;
+    
     
     // Define new class of object depending on input
     Series* seriesPtr = nullptr;
@@ -58,19 +60,29 @@ int main()
     std::cout << "Enter an integer value for the maximum of iterations: ";
     std::cin >> maxiter;
     
+
+    std::cout << "Enter the printing method (terminal or file) :";
+    std::cin >> printMethod;
+
     PrintSeries printer(*seriesPtr,frequency,maxiter);
     WriteSeries writer(*seriesPtr,frequency,maxiter);
 
-    /*
-    WRITING INTO A FILE
-    */
+    if (printMethod == "terminal")
+    {
+        printer.dump();
+    }
+    else if (printMethod == "file")
+    {
+        writer.dump();
+    }
+    else
+    {
+        std::cout << "Error. By default, the result will be printed in the terminal.\n";
+        printer.dump();
+    }
 
-    /* std::string separatorDecision;
-    std::cout << "Enter the wanted separator for the output file (comma, space/tab or pipe): ";
-    std::cin >> separatorDecision; */
-
-    printer.dump();
-    writer.dump();
+    /* printer.dump();
+    writer.dump(); */
  
     return 0;
 }
